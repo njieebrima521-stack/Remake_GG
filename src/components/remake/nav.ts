@@ -5,7 +5,7 @@ import {
 
 export type AppPath =
   | "/resident" | "/resident/scan" | "/resident/guide" | "/resident/pickups" | "/resident/rewards" | "/resident/notifications" | "/resident/profile"
-  | "/collector" | "/collector/route" | "/collector/receipts" | "/collector/earnings"
+  | "/collector" | "/collector/today" | "/collector/receipts" | "/collector/earnings"
   | "/hub" | "/processor" | "/processor/history"
   | "/business" | "/business/pickups" | "/business/reports"
   | "/admin";
@@ -41,7 +41,7 @@ export const ROLE_NAV: RoleNav[] = [
     key: "collector", label: "Collector", home: "/collector", icon: RouteIcon,
     items: [
       { to: "/collector", label: "Dashboard", icon: LayoutDashboard },
-      { to: "/collector/route", label: "Today's route", icon: MapPin },
+      { to: "/collector/today", label: "Today's route", icon: MapPin },
       { to: "/collector/receipts", label: "Records & receipts", icon: ReceiptText },
       { to: "/collector/earnings", label: "Earnings", icon: Wallet },
     ],
@@ -72,7 +72,7 @@ export const ROLE_NAV: RoleNav[] = [
 ];
 
 export function roleFor(path: string): RoleNav {
-  return ROLE_NAV.find((r) => path.startsWith(`/${r.key}`)) ?? ROLE_NAV[0];
+  return ROLE_NAV.find((r) => path.startsWith(`/${r.key}`)) ?? ROLE_NAV[0]!;
 }
 
 export interface Persona {

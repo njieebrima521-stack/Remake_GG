@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { PageHeader, Panel, PickupStatusBadge, Simulated, StatCard } from "@/components/remake/ui";
 import { useRemake } from "@/lib/remake/store";
-import { MATERIALS } from "@/lib/remake/data";
+import { ACTIVE_COLLECTOR, MATERIALS } from "@/lib/remake/data";
 import { COLLECTOR_RATE_GMD_PER_KG } from "@/lib/remake/logic";
 import { fmtGmd, fmtKg } from "@/lib/remake/format";
 
-export const COLLECTOR_NAME = "Lamin Ceesay";
 
 export const Route = createFileRoute("/_dashboard/collector/")({
   head: () => ({
@@ -27,14 +26,14 @@ export const Route = createFileRoute("/_dashboard/collector/")({
 
 function CollectorDashboard() {
   const { state, setOffline, sync } = useRemake();
-  const mine = state.pickups.filter((p) => p.collector === COLLECTOR_NAME);
+  const mine = state.pickups.filter((p) => p.collector === ACTIVE_COLLECTOR);
   const todo = mine.filter((p) => p.status === "scheduled").sort((a, b) => a.date.localeCompare(b.date) || a.slot.localeCompare(b.slot));
   const done = mine.filter((p) => p.weightKg);
   const kg = done.reduce((s, p) => s + (p.weightKg ?? 0), 0);
   const unsynced = state.pickups.filter((p) => p.unsynced).length;
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Collector · Truck GM-4471" title="Good morning, Lamin" description="Your jobs update live when residents and businesses book pickups." actions={<Button asChild><Link to="/collector/route"><MapPin /> Start route</Link></Button>} />
+      <PageHeader eyebrow="Collector · Truck GM-4471" title="Good morning, Lamin" description="Your jobs update live when residents and businesses book pickups." actions={<Button asChild><Link to="/collector/today"><MapPin /> Start route</Link></Button>} />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Open stops" value={todo.length} sub="Assigned to you" icon={Truck} tone="brand" />
         <StatCard label="Weighed" value={fmtKg(kg)} sub={`${done.length} collections`} icon={Scale} />
@@ -42,7 +41,7 @@ function CollectorDashboard() {
         <StatCard label="Unsynced records" value={unsynced} sub={state.collectorOffline ? "Offline mode on" : "All caught up"} icon={state.collectorOffline ? CloudOff : Wifi} tone={unsynced ? "ink" : "default"} />
       </div>
       <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-        <Panel title="Next stops" action={<Link to="/collector/route" className="text-sm font-semibold text-primary hover:underline">Full route</Link>}>
+        <Panel title="Next stops" action={<Link to="/collector/today" className="text-sm font-semibold text-primary hover:underline">Full route</Link>}>
           {todo.length === 0 ? <p className="text-sm text-muted-foreground">No open stops. New bookings will appear here.</p> : (
             <ul className="divide-y">
               {todo.slice(0, 5).map((p, i) => (

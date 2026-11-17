@@ -3,12 +3,11 @@ import { useState } from "react";
 import { ChevronRight, CloudOff, MapPin, Phone } from "lucide-react";
 import { PageHeader, Panel, PickupStatusBadge } from "@/components/remake/ui";
 import { useRemake } from "@/lib/remake/store";
-import { MATERIALS } from "@/lib/remake/data";
+import { ACTIVE_COLLECTOR, MATERIALS } from "@/lib/remake/data";
 import { fmtShortDate } from "@/lib/remake/format";
 import { cn } from "@/lib/utils";
-import { COLLECTOR_NAME } from "./_dashboard.collector.index";
 
-export const Route = createFileRoute("/_dashboard/collector")({
+export const Route = createFileRoute("/_dashboard/collector/today")({
   head: () => ({
     meta: [
       { title: "Collection Route — Remake" },
@@ -26,7 +25,7 @@ function RoutePage() {
   const { state } = useRemake();
   const [show, setShow] = useState<"open" | "all">("open");
   const stops = state.pickups
-    .filter((p) => p.collector === COLLECTOR_NAME && (show === "all" || p.status === "scheduled"))
+    .filter((p) => p.collector === ACTIVE_COLLECTOR && (show === "all" || p.status === "scheduled"))
     .sort((a, b) => a.date.localeCompare(b.date) || a.slot.localeCompare(b.slot));
   const areas = Array.from(new Set(stops.map((s) => s.area)));
   return (

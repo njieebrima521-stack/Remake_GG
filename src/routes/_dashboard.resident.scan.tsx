@@ -38,7 +38,7 @@ function ScanPage() {
   const [result, setResult] = useState<ScanResult | null>(state.lastScan);
 
   const runScan = () => {
-    if (!photo) return toast.error("Add a photo first");
+    if (!photo) { toast.error("Add a photo first"); return; }
     setScanning(true);
     setTimeout(() => {
       const r = simulateScan(variant, `SC-${Date.now().toString(36).toUpperCase()}`);

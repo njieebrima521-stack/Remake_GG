@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { CheckCircle2, ChevronRight, MapPin, QrCode, Repeat, Truck } from "lucide-react";
 import { toast } from "sonner";
@@ -14,12 +14,12 @@ import { fmtDate, fmtKg, fmtNum } from "@/lib/remake/format";
 import type { MaterialId, PickupStatus } from "@/lib/remake/types";
 import { cn } from "@/lib/utils";
 
-type Search = { tab?: "book" | "history"; material?: MaterialId };
+type Search = { tab?: "book" | "history" | undefined; material?: MaterialId | undefined };
 
 export const Route = createFileRoute("/_dashboard/resident/pickups/")({
   validateSearch: (s: Record<string, unknown>): Search => ({
-    tab: s.tab === "book" || s.tab === "history" ? s.tab : undefined,
-    material: typeof s.material === "string" && s.material in MATERIALS ? (s.material as MaterialId) : undefined,
+    tab: s["tab"] === "book" || s["tab"] === "history" ? s["tab"] : undefined,
+    material: typeof s["material"] === "string" && s["material"] in MATERIALS ? (s["material"] as MaterialId) : undefined,
   }),
   head: () => ({
     meta: [
@@ -55,22 +55,24 @@ function PickupsPage() {
   );
 }
 
-function BookForm({ initial }: { initial?: MaterialId }) {
+function BookForm({ initial }: { initial?: MaterialId | undefined }) {
   const { state, bookPickup } = useRemake();
   const [material, setMaterial] = useState<MaterialId>(initial ?? "plastic");
   const [bags, setBags] = useState(2);
   const [date, setDate] = useState<Date | undefined>(parseISO("2026-11-19"));
-  const [slot, setSlot] = useState(TIME_SLOTS[1]);
+  const [slot, setSlot] = useState<string>(TIME_SLOTS[1]!);
   const [address, setAddress] = useState(state.profile.address);
   const [area, setArea] = useState(state.profile.area);
   const [notes, setNotes] = useState("");
+  // Profile hydrates from browser storage after first render.
+  useEffect(() => { setAddress(state.profile.address); setArea(state.profile.area); }, [state.profile.address, state.profile.area]);
   const [done, setDone] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const submit = () => {
-    if (!date) return toast.error("Choose a pickup date");
-    if (!address.trim()) return toast.error("Enter your address");
-    if (bags < 1 || bags > 20) return toast.error("Bags must be between 1 and 20");
+    if (!date) { toast.error("Choose a pickup date"); return; }
+    if (!address.trim()) { toast.error("Enter your address"); return; }
+    if (bags < 1 || bags > 20) { toast.error("Bags must be between 1 and 20"); return; }
     const id = bookPickup({ material, bags, date: format(date, "yyyy-MM-dd"), slot, address: address.trim(), area, notes: notes.trim() || undefined });
     setDone(id);
   };

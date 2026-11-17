@@ -1,4 +1,4 @@
-import { MATERIALS, RESIDENT, COLLECTORS, DEMO_TODAY } from "./data";
+import { MATERIALS, RESIDENT, ACTIVE_COLLECTOR, DEMO_TODAY } from "./data";
 import type { Batch, MaterialId, Pickup, RemakeState, Reward, ScanResult } from "./types";
 
 /** Collector payout per kg recorded, in GMD (simulated rate). */
@@ -15,13 +15,13 @@ const round1 = (n: number) => Math.round(n * 10) / 10;
 export interface BookInput {
   material: MaterialId;
   /** Defaults to the demo resident. */
-  business?: { name: string; phone: string; frequency: "Weekly" | "Fortnightly" | "Monthly" };
+  business?: undefined | { name: string; phone: string; frequency: "Weekly" | "Fortnightly" | "Monthly" };
   bags: number;
   date: string;
   slot: string;
   address: string;
   area: string;
-  notes?: string;
+  notes?: string | undefined;
 }
 
 export function saveScan(state: RemakeState, scan: ScanResult): RemakeState {
@@ -48,7 +48,7 @@ export function bookPickup(state: RemakeState, input: BookInput): RemakeState {
     slot: input.slot,
     notes: input.notes,
     status: "scheduled",
-    collector: COLLECTORS[0],
+    collector: ACTIVE_COLLECTOR,
     createdAt: DEMO_TODAY,
   };
   return { ...state, seq, pickups: [pickup, ...state.pickups], demoPickupId: input.business ? state.demoPickupId : id };
@@ -117,7 +117,7 @@ export function decisionFor(acceptedKg: number, rejectedKg: number): "accepted" 
 export function createBatch(state: RemakeState, pickupIds: string[], processor: string): RemakeState {
   const picks = state.pickups.filter((p) => pickupIds.includes(p.id) && p.status === "collected");
   if (picks.length === 0) return state;
-  const material = picks[0].material;
+  const material = picks[0]!.material;
   if (picks.some((p) => p.material !== material)) return state;
   const seq = state.seq + 1;
   const id = `BT-${seq}`;
@@ -254,5 +254,5 @@ export function simulateScan(variant: number, id: string): ScanResult {
       estimatedKg: 1.4,
     },
   ];
-  return { ...presets[variant % presets.length], id, createdAt: DEMO_TODAY };
+  return { ...presets[variant % presets.length]!, id, createdAt: DEMO_TODAY };
 }

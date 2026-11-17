@@ -121,7 +121,7 @@ const DECISION: Record<BatchDecision, { label: string; variant: "success" | "war
   rejected: { label: "Rejected", variant: "danger" },
 };
 
-export function DecisionBadge({ decision }: { decision?: BatchDecision }) {
+export function DecisionBadge({ decision }: { decision?: BatchDecision | undefined }) {
   if (!decision) return null;
   const d = DECISION[decision];
   return <Badge variant={d.variant}>{d.label}</Badge>;

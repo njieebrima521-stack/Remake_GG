@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Remake project rules
+- Frontend-only demo: all state lives in `src/lib/remake/store.tsx` (React reducer + localStorage); workflow rules are pure functions in `src/lib/remake/logic.ts` with tests in `logic.test.ts` — keep business rules there, not in pages.
+- Each role (resident, collector, hub, processor, business, admin) has its own sidebar section defined in `src/components/remake/nav.ts`; add new pages there.
+- Form state seeded from the store must tolerate post-mount hydration from localStorage (derive or sync in an effect), because SSR renders seed data first.

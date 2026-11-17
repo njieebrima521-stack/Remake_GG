@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createSeedState, REWARDS } from "./data";
-import { bookPickup, createBatch, handOverBatch, recordWeight, redeemReward, verifyBatch } from "./logic";
+import { bookPickup, createBatch, decisionFor, handOverBatch, recordWeight, redeemReward, rejectPickup, setCollectorOffline, syncCollector, verifyBatch } from "./logic";
 
 const input = { material: "plastic" as const, bags: 2, date: "2026-11-18", slot: "09:00 – 11:00", address: "x", area: "Kanifing" };
 
@@ -58,5 +58,30 @@ describe("Green Coins workflow", () => {
     const res = redeemReward(seed, bag);
     expect(res.ok).toBe(true);
     if (res.ok) expect(res.state.wallet.available).toBe(2100);
+  });
+});
+
+describe("collector and processor rules", () => {
+  it("a pickup rejected by the collector creates no pending coins", () => {
+    const seed = createSeedState();
+    const booked = bookPickup(seed, { material: "plastic", bags: 2, date: "2026-11-19", slot: "09:00 – 11:00", address: "x", area: "Kanifing" });
+    const s = rejectPickup(booked, booked.demoPickupId!, "Customer not home");
+    expect(s.pickups.find((p) => p.id === booked.demoPickupId)!.status).toBe("rejected");
+    expect(s.wallet.pending).toBe(seed.wallet.pending);
+  });
+
+  it("weights recorded offline stay unsynced until sync", () => {
+    let s = bookPickup(createSeedState(), { material: "metal", bags: 1, date: "2026-11-19", slot: "09:00 – 11:00", address: "x", area: "Bakau" });
+    const id = s.demoPickupId!;
+    s = recordWeight(setCollectorOffline(s, true), id, 4);
+    expect(s.pickups.find((p) => p.id === id)!.unsynced).toBe(true);
+    s = syncCollector(s);
+    expect(s.pickups.find((p) => p.id === id)!.unsynced).toBeUndefined();
+  });
+
+  it("processor decision is accepted, partial or rejected by weight", () => {
+    expect(decisionFor(10, 0)).toBe("accepted");
+    expect(decisionFor(8, 2)).toBe("partial");
+    expect(decisionFor(0, 10)).toBe("rejected");
   });
 });

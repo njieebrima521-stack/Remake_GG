@@ -174,3 +174,5 @@ export const MONTHLY_TONNAGE = [
   { month: "Oct", plastic: 31.8, metal: 10.4, glass: 6.9, paper: 9.6, ewaste: 2.3 },
   { month: "Nov", plastic: 34.6, metal: 11.2, glass: 7.4, paper: 10.1, ewaste: 2.6 },
 ];
+export const ACTIVE_COLLECTOR = "Lamin Ceesay";
+export const BUSINESS = { name: "Kololi Sands Hotel", phone: "+220 446 5500", address: "Senegambia Strip", area: "Kololi" };

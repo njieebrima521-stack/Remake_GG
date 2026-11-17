@@ -17,24 +17,24 @@ export interface Pickup {
   bags: number;
   date: string; // yyyy-mm-dd
   slot: string;
-  notes?: string;
+  notes?: string | undefined;
   status: PickupStatus;
   collector: string;
   createdAt: string;
-  weightKg?: number;
-  receiptNo?: string;
-  collectedAt?: string;
-  batchId?: string;
-  acceptedKg?: number;
-  pointsPending?: number;
-  pointsAwarded?: number;
-  recurring?: boolean;
+  weightKg?: number | undefined;
+  receiptNo?: string | undefined;
+  collectedAt?: string | undefined;
+  batchId?: string | undefined;
+  acceptedKg?: number | undefined;
+  pointsPending?: number | undefined;
+  pointsAwarded?: number | undefined;
+  recurring?: boolean | undefined;
   /** Recurring frequency for business pickups. */
-  frequency?: "Weekly" | "Fortnightly" | "Monthly";
-  rejectReason?: string;
+  frequency?: "Weekly" | "Fortnightly" | "Monthly" | undefined;
+  rejectReason?: string | undefined;
   /** Collector recorded this while offline; not yet synced. */
-  unsynced?: boolean;
-  photoTaken?: boolean;
+  unsynced?: boolean | undefined;
+  photoTaken?: boolean | undefined;
 }
 
 export type BatchStatus = "ready" | "in_transit" | "verified";
@@ -48,11 +48,11 @@ export interface Batch {
   processor: string;
   createdAt: string;
   status: BatchStatus;
-  acceptedKg?: number;
-  rejectedKg?: number;
-  grade?: string;
-  inspectionNote?: string;
-  decision?: BatchDecision;
+  acceptedKg?: number | undefined;
+  rejectedKg?: number | undefined;
+  grade?: string | undefined;
+  inspectionNote?: string | undefined;
+  decision?: BatchDecision | undefined;
 }
 
 export type BatchDecision = "accepted" | "partial" | "rejected";

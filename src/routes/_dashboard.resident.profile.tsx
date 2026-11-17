@@ -33,7 +33,7 @@ function ProfilePage() {
   const mine = state.pickups.filter((p) => p.mine);
   const kg = mine.reduce((s, p) => s + (p.weightKg ?? 0), 0);
   const save = () => {
-    if (!form.name.trim() || !form.phone.trim()) return toast.error("Name and phone are required");
+    if (!form.name.trim() || !form.phone.trim()) { toast.error("Name and phone are required"); return; }
     updateProfile(form);
     toast.success("Profile saved");
   };

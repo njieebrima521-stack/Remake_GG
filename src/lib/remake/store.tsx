@@ -84,7 +84,7 @@ export function RemakeProvider({ children }: { children: ReactNode }) {
         const next = L.createBatch(ref.current, ids, processor);
         if (next === ref.current) return null;
         apply(next);
-        return next.batches[0].id;
+        return next.batches[0]!.id;
       },
       handOverBatch: (id) => apply(L.handOverBatch(ref.current, id)),
       verifyBatch: (id, a, r, g, n) => apply(L.verifyBatch(ref.current, id, a, r, g, n)),

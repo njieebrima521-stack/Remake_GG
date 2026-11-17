@@ -45,6 +45,9 @@ function Landing() {
         <Logo />
         <div className="flex items-center gap-3">
           <Simulated label="Demo with simulated data" className="hidden sm:inline-flex" />
+          <Button asChild variant="outline">
+            <Link to="/join">Sign up</Link>
+          </Button>
           <Button asChild variant="ink">
             <Link to="/resident">Open dashboard</Link>
           </Button>
