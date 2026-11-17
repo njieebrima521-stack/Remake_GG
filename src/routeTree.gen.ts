@@ -10,33 +10,168 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteImport } from './routes/_dashboard'
+import { Route as DashboardCollectorRouteRouteImport } from './routes/_dashboard.collector.route'
+import { Route as DashboardCollectorIndexRouteImport } from './routes/_dashboard.collector.index'
+import { Route as DashboardResidentIndexRouteImport } from './routes/_dashboard.resident.index'
+import { Route as DashboardResidentGuideRouteImport } from './routes/_dashboard.resident.guide'
+import { Route as DashboardResidentNotificationsRouteImport } from './routes/_dashboard.resident.notifications'
+import { Route as DashboardResidentProfileRouteImport } from './routes/_dashboard.resident.profile'
+import { Route as DashboardResidentRewardsRouteImport } from './routes/_dashboard.resident.rewards'
+import { Route as DashboardResidentScanRouteImport } from './routes/_dashboard.resident.scan'
+import { Route as DashboardResidentPickupsIndexRouteImport } from './routes/_dashboard.resident.pickups.index'
+import { Route as DashboardResidentPickupsIdRouteImport } from './routes/_dashboard.resident.pickups.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardCollectorRouteRoute = DashboardCollectorRouteRouteImport.update({
+  id: '/collector',
+  path: '/collector',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardCollectorIndexRoute = DashboardCollectorIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardCollectorRouteRoute,
+} as any)
+const DashboardResidentIndexRoute = DashboardResidentIndexRouteImport.update({
+  id: '/resident/',
+  path: '/resident/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardResidentGuideRoute = DashboardResidentGuideRouteImport.update({
+  id: '/resident/guide',
+  path: '/resident/guide',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardResidentNotificationsRoute =
+  DashboardResidentNotificationsRouteImport.update({
+    id: '/resident/notifications',
+    path: '/resident/notifications',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardResidentProfileRoute =
+  DashboardResidentProfileRouteImport.update({
+    id: '/resident/profile',
+    path: '/resident/profile',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardResidentRewardsRoute =
+  DashboardResidentRewardsRouteImport.update({
+    id: '/resident/rewards',
+    path: '/resident/rewards',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardResidentScanRoute = DashboardResidentScanRouteImport.update({
+  id: '/resident/scan',
+  path: '/resident/scan',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardResidentPickupsIndexRoute =
+  DashboardResidentPickupsIndexRouteImport.update({
+    id: '/resident/pickups/',
+    path: '/resident/pickups/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardResidentPickupsIdRoute =
+  DashboardResidentPickupsIdRouteImport.update({
+    id: '/resident/pickups/$id',
+    path: '/resident/pickups/$id',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/collector': typeof DashboardCollectorRouteRouteWithChildren
+  '/resident/guide': typeof DashboardResidentGuideRoute
+  '/resident/notifications': typeof DashboardResidentNotificationsRoute
+  '/resident/profile': typeof DashboardResidentProfileRoute
+  '/resident/rewards': typeof DashboardResidentRewardsRoute
+  '/resident/scan': typeof DashboardResidentScanRoute
+  '/collector/': typeof DashboardCollectorIndexRoute
+  '/resident/': typeof DashboardResidentIndexRoute
+  '/resident/pickups/$id': typeof DashboardResidentPickupsIdRoute
+  '/resident/pickups/': typeof DashboardResidentPickupsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/resident/guide': typeof DashboardResidentGuideRoute
+  '/resident/notifications': typeof DashboardResidentNotificationsRoute
+  '/resident/profile': typeof DashboardResidentProfileRoute
+  '/resident/rewards': typeof DashboardResidentRewardsRoute
+  '/resident/scan': typeof DashboardResidentScanRoute
+  '/collector': typeof DashboardCollectorIndexRoute
+  '/resident': typeof DashboardResidentIndexRoute
+  '/resident/pickups/$id': typeof DashboardResidentPickupsIdRoute
+  '/resident/pickups': typeof DashboardResidentPickupsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_dashboard': typeof DashboardRouteWithChildren
+  '/_dashboard/collector': typeof DashboardCollectorRouteRouteWithChildren
+  '/_dashboard/resident/guide': typeof DashboardResidentGuideRoute
+  '/_dashboard/resident/notifications': typeof DashboardResidentNotificationsRoute
+  '/_dashboard/resident/profile': typeof DashboardResidentProfileRoute
+  '/_dashboard/resident/rewards': typeof DashboardResidentRewardsRoute
+  '/_dashboard/resident/scan': typeof DashboardResidentScanRoute
+  '/_dashboard/collector/': typeof DashboardCollectorIndexRoute
+  '/_dashboard/resident/': typeof DashboardResidentIndexRoute
+  '/_dashboard/resident/pickups/$id': typeof DashboardResidentPickupsIdRoute
+  '/_dashboard/resident/pickups/': typeof DashboardResidentPickupsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/collector'
+    | '/resident/guide'
+    | '/resident/notifications'
+    | '/resident/profile'
+    | '/resident/rewards'
+    | '/resident/scan'
+    | '/collector/'
+    | '/resident/'
+    | '/resident/pickups/$id'
+    | '/resident/pickups/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/resident/guide'
+    | '/resident/notifications'
+    | '/resident/profile'
+    | '/resident/rewards'
+    | '/resident/scan'
+    | '/collector'
+    | '/resident'
+    | '/resident/pickups/$id'
+    | '/resident/pickups'
+  id:
+    | '__root__'
+    | '/'
+    | '/_dashboard'
+    | '/_dashboard/collector'
+    | '/_dashboard/resident/guide'
+    | '/_dashboard/resident/notifications'
+    | '/_dashboard/resident/profile'
+    | '/_dashboard/resident/rewards'
+    | '/_dashboard/resident/scan'
+    | '/_dashboard/collector/'
+    | '/_dashboard/resident/'
+    | '/_dashboard/resident/pickups/$id'
+    | '/_dashboard/resident/pickups/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +183,131 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/collector': {
+      id: '/_dashboard/collector'
+      path: '/collector'
+      fullPath: '/collector'
+      preLoaderRoute: typeof DashboardCollectorRouteRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/collector/': {
+      id: '/_dashboard/collector/'
+      path: '/'
+      fullPath: '/collector/'
+      preLoaderRoute: typeof DashboardCollectorIndexRouteImport
+      parentRoute: typeof DashboardCollectorRouteRoute
+    }
+    '/_dashboard/resident/': {
+      id: '/_dashboard/resident/'
+      path: '/resident'
+      fullPath: '/resident/'
+      preLoaderRoute: typeof DashboardResidentIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/resident/guide': {
+      id: '/_dashboard/resident/guide'
+      path: '/resident/guide'
+      fullPath: '/resident/guide'
+      preLoaderRoute: typeof DashboardResidentGuideRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/resident/notifications': {
+      id: '/_dashboard/resident/notifications'
+      path: '/resident/notifications'
+      fullPath: '/resident/notifications'
+      preLoaderRoute: typeof DashboardResidentNotificationsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/resident/profile': {
+      id: '/_dashboard/resident/profile'
+      path: '/resident/profile'
+      fullPath: '/resident/profile'
+      preLoaderRoute: typeof DashboardResidentProfileRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/resident/rewards': {
+      id: '/_dashboard/resident/rewards'
+      path: '/resident/rewards'
+      fullPath: '/resident/rewards'
+      preLoaderRoute: typeof DashboardResidentRewardsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/resident/scan': {
+      id: '/_dashboard/resident/scan'
+      path: '/resident/scan'
+      fullPath: '/resident/scan'
+      preLoaderRoute: typeof DashboardResidentScanRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/resident/pickups/': {
+      id: '/_dashboard/resident/pickups/'
+      path: '/resident/pickups'
+      fullPath: '/resident/pickups/'
+      preLoaderRoute: typeof DashboardResidentPickupsIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/resident/pickups/$id': {
+      id: '/_dashboard/resident/pickups/$id'
+      path: '/resident/pickups/$id'
+      fullPath: '/resident/pickups/$id'
+      preLoaderRoute: typeof DashboardResidentPickupsIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardCollectorRouteRouteChildren {
+  DashboardCollectorIndexRoute: typeof DashboardCollectorIndexRoute
+}
+
+const DashboardCollectorRouteRouteChildren: DashboardCollectorRouteRouteChildren =
+  {
+    DashboardCollectorIndexRoute: DashboardCollectorIndexRoute,
+  }
+
+const DashboardCollectorRouteRouteWithChildren =
+  DashboardCollectorRouteRoute._addFileChildren(
+    DashboardCollectorRouteRouteChildren,
+  )
+
+interface DashboardRouteChildren {
+  DashboardCollectorRouteRoute: typeof DashboardCollectorRouteRouteWithChildren
+  DashboardResidentGuideRoute: typeof DashboardResidentGuideRoute
+  DashboardResidentNotificationsRoute: typeof DashboardResidentNotificationsRoute
+  DashboardResidentProfileRoute: typeof DashboardResidentProfileRoute
+  DashboardResidentRewardsRoute: typeof DashboardResidentRewardsRoute
+  DashboardResidentScanRoute: typeof DashboardResidentScanRoute
+  DashboardResidentIndexRoute: typeof DashboardResidentIndexRoute
+  DashboardResidentPickupsIdRoute: typeof DashboardResidentPickupsIdRoute
+  DashboardResidentPickupsIndexRoute: typeof DashboardResidentPickupsIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardCollectorRouteRoute: DashboardCollectorRouteRouteWithChildren,
+  DashboardResidentGuideRoute: DashboardResidentGuideRoute,
+  DashboardResidentNotificationsRoute: DashboardResidentNotificationsRoute,
+  DashboardResidentProfileRoute: DashboardResidentProfileRoute,
+  DashboardResidentRewardsRoute: DashboardResidentRewardsRoute,
+  DashboardResidentScanRoute: DashboardResidentScanRoute,
+  DashboardResidentIndexRoute: DashboardResidentIndexRoute,
+  DashboardResidentPickupsIdRoute: DashboardResidentPickupsIdRoute,
+  DashboardResidentPickupsIndexRoute: DashboardResidentPickupsIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
