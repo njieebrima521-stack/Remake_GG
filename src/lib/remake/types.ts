@@ -114,6 +114,8 @@ export interface RemakeState {
   demoPickupId: string | null;
   seq: number;
   collectorOffline: boolean;
+  /** Demo workspace the user last chose (role key from nav). */
+  activeWorkspace: string;
   readNotifications: string[];
   profile: { name: string; phone: string; address: string; area: string; smsAlerts: boolean; language: "English" | "Wolof" | "Mandinka" };
 }

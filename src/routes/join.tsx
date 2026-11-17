@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Gift, LocateFixed, Recycle, Truck } from "lucide-react";
+import { ArrowLeft, Building2, Factory, Gift, Landmark, LocateFixed, Recycle, Route as RouteIcon, ShieldCheck, Truck, UserRound, Warehouse } from "lucide-react";
+import { roleByKey } from "@/components/remake/nav";
 import { toast } from "sonner";
 import hero from "@/assets/hero-beach.jpg";
 import { Button } from "@/components/ui/button";
@@ -28,10 +29,23 @@ const SLIDES = [
   { icon: Truck, title: "Easy garbage handover", text: "Request a waste pickup from your home or drop off your waste at the nearest collection point." },
   { icon: Gift, title: "Redeem points for rewards", text: "Collect Green Coins from each drop-off and redeem them for airtime, cash power and more." },
 ];
+const TYPES = [
+  { key: "resident", label: "Resident", text: "Recycle at home, earn coins", icon: UserRound },
+  { key: "business", label: "Business", text: "Recurring commercial pickups", icon: Building2 },
+  { key: "collector", label: "Collector", text: "Run routes and weigh waste", icon: RouteIcon },
+  { key: "institution", label: "Institution", text: "Hub, processor or admin", icon: Landmark },
+] as const;
+const INSTITUTIONS = [
+  { key: "hub", label: "Recycling Hub", icon: Warehouse },
+  { key: "processor", label: "Processor", icon: Factory },
+  { key: "admin", label: "Admin", icon: ShieldCheck },
+] as const;
 const inputCls = "mt-1.5 h-12 w-full rounded-xl border bg-card px-4 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
 
 function JoinPage() {
-  const { updateProfile } = useRemake();
+  const { state, updateProfile, setWorkspace } = useRemake();
+  const [type, setType] = useState<string | null>(null);
+  const [inst, setInst] = useState<string | null>(null);
   const navigate = useNavigate();
   const [i, setI] = useState(0);
   const [name, setName] = useState("");
@@ -44,9 +58,13 @@ function JoinPage() {
     if (name.trim().length < 2) { toast.error("Enter your name"); return; }
     if (!/^\+?[0-9 ]{7,}$/.test(phone)) { toast.error("Enter a valid phone number"); return; }
     if (pw.length < 6) { toast.error("Password must be at least 6 characters"); return; }
+    if (!type) { toast.error("Choose your account type"); return; }
+    if (type === "institution" && !inst) { toast.error("Choose your institution workspace"); return; }
+    const workspace = type === "institution" ? inst! : type;
     updateProfile({ name: name.trim(), phone: phone.trim(), ...(loc ? { address: loc } : {}) });
     toast.success(`Welcome, ${name.split(" ")[0]}!`, { description: "Demo account — no real sign-up happened." });
-    navigate({ to: "/resident" });
+    setWorkspace(workspace);
+    navigate({ to: roleByKey(workspace).home });
   };
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
@@ -70,6 +88,28 @@ function JoinPage() {
           <h1 className="mt-8 font-display text-3xl font-semibold">Join with Remake</h1>
           <p className="mt-1 text-muted-foreground">Sign up now and start your journey to make The Gambia greener.</p>
           <form onSubmit={submit} className="mt-8 space-y-4">
+            <fieldset>
+              <legend className="text-sm font-medium">Account type</legend>
+              <div className="mt-1.5 grid grid-cols-2 gap-2" role="radiogroup">
+                {TYPES.map((t) => (
+                  <button key={t.key} type="button" role="radio" aria-checked={type === t.key} onClick={() => { setType(t.key); if (t.key !== "institution") setInst(null); }}
+                    className={cn("flex items-start gap-2.5 rounded-xl border bg-card p-3 text-left transition", type === t.key ? "border-primary bg-mint ring-2 ring-primary/20" : "hover:border-primary/40")}>
+                    <span className={cn("grid size-8 shrink-0 place-items-center rounded-lg", type === t.key ? "bg-primary text-primary-foreground" : "bg-mint text-mint-foreground")}><t.icon className="size-4" /></span>
+                    <span className="min-w-0"><span className="block text-sm font-semibold">{t.label}</span><span className="block text-xs text-muted-foreground">{t.text}</span></span>
+                  </button>
+                ))}
+              </div>
+              {type === "institution" && (
+                <div className="mt-2 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Institution workspace">
+                  {INSTITUTIONS.map((t) => (
+                    <button key={t.key} type="button" role="radio" aria-checked={inst === t.key} onClick={() => setInst(t.key)}
+                      className={cn("flex flex-col items-center gap-1 rounded-xl border p-2.5 text-xs font-semibold transition", inst === t.key ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-primary/40")}>
+                      <t.icon className="size-4" />{t.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </fieldset>
             <label className="block text-sm font-medium">Name<input className={inputCls} placeholder="Ebrima Njie" value={name} onChange={(e) => setName(e.target.value)} /></label>
             <label className="block text-sm font-medium">Phone<input className={inputCls} placeholder="+220 771 2345" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
             <label className="block text-sm font-medium">Password<input type="password" className={inputCls} placeholder="Enter password" value={pw} onChange={(e) => setPw(e.target.value)} /></label>
@@ -80,7 +120,7 @@ function JoinPage() {
             </label>
             <Button type="submit" size="lg" className="w-full">Confirm</Button>
           </form>
-          <p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link to="/resident" className="font-semibold text-primary">Login here</Link></p>
+          <p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link to={roleByKey(state.activeWorkspace).home} className="font-semibold text-primary">Login here</Link></p>
         </div>
       </section>
     </div>

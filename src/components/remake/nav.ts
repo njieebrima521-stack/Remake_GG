@@ -71,6 +71,14 @@ export const ROLE_NAV: RoleNav[] = [
   },
 ];
 
+export const INSTITUTION_KEYS = ["hub", "processor", "admin"] as const;
+/** Primary account types; institutional workspaces sit under "institution". */
+export const PRIMARY_ROLES = ["resident", "business", "collector"] as const;
+
+export function roleByKey(key: string): RoleNav {
+  return ROLE_NAV.find((r) => r.key === key) ?? ROLE_NAV[0]!;
+}
+
 export function roleFor(path: string): RoleNav {
   return ROLE_NAV.find((r) => path.startsWith(`/${r.key}`)) ?? ROLE_NAV[0]!;
 }

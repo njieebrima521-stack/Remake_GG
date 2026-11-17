@@ -5,7 +5,8 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { ROLE_NAV, personaFor, roleFor } from "./nav";
+import { personaFor, roleFor } from "./nav";
+import { AccountMenu } from "./AccountMenu";
 import { residentNotifications } from "@/lib/remake/notifications";
 import { Logo } from "./Logo";
 import { useRemake } from "@/lib/remake/store";
@@ -40,24 +41,6 @@ function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (
               </li>
             );
           })}
-        </ul>
-      </div>
-      <div>
-        {!collapsed && <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Switch workspace</p>}
-        <ul className="space-y-1">
-          {ROLE_NAV.filter((r) => r.key !== role.key).map((r) => (
-            <li key={r.key}>
-              <Link
-                to={r.home}
-                onClick={onNavigate}
-                title={collapsed ? r.label : undefined}
-                className={cn("flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground", collapsed && "justify-center px-0")}
-              >
-                <r.icon className="size-4 shrink-0" />
-                {!collapsed && <span className="truncate">{r.label}</span>}
-              </Link>
-            </li>
-          ))}
         </ul>
       </div>
     </nav>
@@ -158,13 +141,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Bell className="size-[18px]" />
               </button>
             )}
-            <div className="flex items-center gap-3 rounded-full border bg-card py-1 pl-1 pr-4" title={persona.org}>
-              <span className="grid size-8 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">{persona.initials}</span>
-              <span className="hidden leading-tight sm:block">
-                <span className="block text-sm font-semibold">{isResident ? state.profile.name : persona.name}</span>
-                <span className="block text-[11px] text-muted-foreground">{persona.role}</span>
-              </span>
-            </div>
+            <AccountMenu name={isResident ? state.profile.name : persona.name} />
           </div>
         </header>
         <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>

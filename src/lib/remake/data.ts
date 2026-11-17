@@ -160,6 +160,7 @@ export function createSeedState(): RemakeState {
     demoPickupId: null,
     seq: 1100,
     collectorOffline: false,
+    activeWorkspace: "resident",
     readNotifications: [],
     profile: { name: RESIDENT.name, phone: RESIDENT.phone, address: RESIDENT.address, area: RESIDENT.area, smsAlerts: true, language: "English" },
   };

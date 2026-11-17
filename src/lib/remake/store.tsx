@@ -33,6 +33,7 @@ interface Ctx {
   setOffline: (offline: boolean) => void;
   sync: () => void;
   markPhoto: (pickupId: string) => void;
+  setWorkspace: (key: string) => void;
   markNotificationsRead: (ids: string[]) => void;
   updateProfile: (p: Partial<RemakeState["profile"]>) => void;
   reset: () => void;
@@ -96,6 +97,7 @@ export function RemakeProvider({ children }: { children: ReactNode }) {
       rejectPickup: (id, reason) => apply(L.rejectPickup(ref.current, id, reason)),
       setOffline: (o) => apply(L.setCollectorOffline(ref.current, o)),
       sync: () => apply(L.syncCollector(ref.current)),
+      setWorkspace: (key) => { if (ref.current.activeWorkspace !== key) apply({ ...ref.current, activeWorkspace: key }); },
       markPhoto: (id) => apply(L.markPhoto(ref.current, id)),
       markNotificationsRead: (ids) => apply({ ...ref.current, readNotifications: Array.from(new Set([...ref.current.readNotifications, ...ids])) }),
       updateProfile: (p) => apply({ ...ref.current, profile: { ...ref.current.profile, ...p } }),
