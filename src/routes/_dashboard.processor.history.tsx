@@ -29,7 +29,7 @@ function HistoryPage() {
   return (
     <div>
       <PageHeader eyebrow="Processor" title="Processing history" />
-      <Panel action={<div className="flex gap-1.5">{(["all", "accepted", "partial", "rejected"] as const).map((k) => <button key={k} onClick={() => setF(k)} className={cn("rounded-full px-3 py-1 text-xs font-semibold capitalize", f === k ? "bg-ink text-ink-foreground" : "bg-muted text-muted-foreground")}>{k}</button>)}</div>} title="Verified batches">
+      <Panel action={<div className="flex flex-wrap gap-1.5">{(["all", "accepted", "partial", "rejected"] as const).map((k) => <button key={k} onClick={() => setF(k)} className={cn("rounded-full px-3 py-1 text-xs font-semibold capitalize", f === k ? "bg-ink text-ink-foreground" : "bg-muted text-muted-foreground")}>{k}</button>)}</div>} title="Verified batches">
         <Table>
           <TableHeader><TableRow><TableHead>Batch</TableHead><TableHead>Material</TableHead><TableHead>Declared</TableHead><TableHead>Accepted</TableHead><TableHead>Rejected</TableHead><TableHead>Grade</TableHead><TableHead>Decision</TableHead></TableRow></TableHeader>
           <TableBody>

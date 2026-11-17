@@ -41,15 +41,15 @@ const FLOW = [
 function Landing() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="mx-auto flex h-20 max-w-[1280px] items-center justify-between px-6 md:px-10">
+      <header className="mx-auto flex h-20 max-w-[1280px] items-center justify-between gap-3 px-4 sm:px-6 md:px-10">
         <Logo />
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Simulated label="Demo with simulated data" className="hidden sm:inline-flex" />
           <Button asChild variant="outline">
             <Link to="/join">Sign up</Link>
           </Button>
           <Button asChild variant="ink">
-            <Link to="/resident">Open dashboard</Link>
+            <Link to="/resident">Open<span className="hidden sm:inline">&nbsp;dashboard</span></Link>
           </Button>
         </div>
       </header>

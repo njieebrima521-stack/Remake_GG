@@ -33,7 +33,7 @@ function RoutePage() {
       <PageHeader eyebrow="Collector" title="Assigned route" description={`Route covers ${areas.join(" → ") || "no areas yet"}`} />
       <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
         <Panel title={`${stops.length} stops`} action={
-          <div className="flex gap-1.5">{(["open", "all"] as const).map((k) => <button key={k} onClick={() => setShow(k)} className={cn("rounded-full px-3 py-1 text-xs font-semibold", show === k ? "bg-ink text-ink-foreground" : "bg-muted text-muted-foreground")}>{k === "open" ? "Open" : "All"}</button>)}</div>
+          <div className="flex flex-wrap gap-1.5">{(["open", "all"] as const).map((k) => <button key={k} onClick={() => setShow(k)} className={cn("rounded-full px-3 py-1 text-xs font-semibold", show === k ? "bg-ink text-ink-foreground" : "bg-muted text-muted-foreground")}>{k === "open" ? "Open" : "All"}</button>)}</div>
         }>
           <ol className="space-y-3">
             {stops.map((p, i) => (

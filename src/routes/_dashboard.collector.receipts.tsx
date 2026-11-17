@@ -33,7 +33,7 @@ function ReceiptsPage() {
   return (
     <div>
       <PageHeader eyebrow="Collector" title="Records & receipts" description="Every handover you've recorded, including rejections." />
-      <Panel action={<div className="flex gap-1.5">{(["accepted", "rejected"] as const).map((k) => <button key={k} onClick={() => setTab(k)} className={cn("rounded-full px-3 py-1 text-xs font-semibold capitalize", tab === k ? "bg-ink text-ink-foreground" : "bg-muted text-muted-foreground")}>{k} ({mine.filter((p) => (k === "rejected" ? p.status === "rejected" : p.status !== "rejected")).length})</button>)}</div>} title={tab === "accepted" ? "Accepted collections" : "Rejected pickups"}>
+      <Panel action={<div className="flex flex-wrap gap-1.5">{(["accepted", "rejected"] as const).map((k) => <button key={k} onClick={() => setTab(k)} className={cn("rounded-full px-3 py-1 text-xs font-semibold capitalize", tab === k ? "bg-ink text-ink-foreground" : "bg-muted text-muted-foreground")}>{k} ({mine.filter((p) => (k === "rejected" ? p.status === "rejected" : p.status !== "rejected")).length})</button>)}</div>} title={tab === "accepted" ? "Accepted collections" : "Rejected pickups"}>
         <Table>
           <TableHeader><TableRow><TableHead>{tab === "accepted" ? "Receipt" : "Pickup"}</TableHead><TableHead>Customer</TableHead><TableHead>Material</TableHead><TableHead>{tab === "accepted" ? "Weight" : "Reason"}</TableHead><TableHead>Date</TableHead><TableHead>Status</TableHead></TableRow></TableHeader>
           <TableBody>

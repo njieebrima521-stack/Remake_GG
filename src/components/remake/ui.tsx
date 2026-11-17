@@ -30,17 +30,17 @@ export function Simulated({ label = "Simulated", className }: { label?: string; 
 
 export function Panel({ title, description, action, children, className, bodyClassName }: { title?: ReactNode; description?: ReactNode; action?: ReactNode; children: ReactNode; className?: string; bodyClassName?: string }) {
   return (
-    <section className={cn("rounded-2xl border bg-card shadow-card", className)}>
+    <section className={cn("min-w-0 rounded-2xl border bg-card shadow-card", className)}>
       {(title || action) && (
-        <header className="flex items-start justify-between gap-4 px-6 pt-5">
-          <div>
+        <header className="flex flex-col items-start gap-3 px-4 pt-5 sm:flex-row sm:justify-between sm:gap-4 sm:px-6">
+          <div className="min-w-0">
             {title && <h2 className="text-base font-semibold">{title}</h2>}
             {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
           </div>
           {action}
         </header>
       )}
-      <div className={cn("p-6", title && "pt-4", bodyClassName)}>{children}</div>
+      <div className={cn("p-4 sm:p-6", title && "pt-4 sm:pt-4", bodyClassName)}>{children}</div>
     </section>
   );
 }

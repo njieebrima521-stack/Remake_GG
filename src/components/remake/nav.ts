@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, ScanLine, BookOpen, Truck, Gift, Bell, UserRound, Building2, Route as RouteIcon, Warehouse,
-  Factory, ShieldCheck, MapPin, ReceiptText, Wallet, Repeat, BarChart3, History, type LucideIcon,
+  Factory, ShieldCheck, Home, Info, MapPin, ReceiptText, Wallet, Repeat, BarChart3, History, type LucideIcon,
 } from "lucide-react";
 
 export type AppPath =
@@ -70,6 +70,48 @@ export const ROLE_NAV: RoleNav[] = [
     items: [{ to: "/admin", label: "Platform overview", icon: ShieldCheck }],
   },
 ];
+
+export interface MobileNav {
+  items: NavItem[];
+  /** Raised centre action (resident scan button from the original design). */
+  center?: NavItem | undefined;
+}
+
+/** Mobile bottom navigation per workspace; max 4 items plus an optional centre action. */
+export const MOBILE_NAV: Record<string, MobileNav> = {
+  resident: {
+    items: [
+      { to: "/resident", label: "Home", icon: Home },
+      { to: "/resident/guide", label: "Info", icon: Info },
+      { to: "/resident/pickups", label: "History", icon: History },
+      { to: "/resident/profile", label: "Profile", icon: UserRound },
+    ],
+    center: { to: "/resident/scan", label: "Scan waste", icon: ScanLine },
+  },
+  collector: {
+    items: [
+      { to: "/collector", label: "Home", icon: Home },
+      { to: "/collector/today", label: "Route", icon: MapPin },
+      { to: "/collector/receipts", label: "Records", icon: ReceiptText },
+      { to: "/collector/earnings", label: "Earnings", icon: Wallet },
+    ],
+  },
+  hub: { items: [{ to: "/hub", label: "Hub", icon: Warehouse }] },
+  processor: {
+    items: [
+      { to: "/processor", label: "Incoming", icon: Factory },
+      { to: "/processor/history", label: "History", icon: History },
+    ],
+  },
+  business: {
+    items: [
+      { to: "/business", label: "Home", icon: Home },
+      { to: "/business/pickups", label: "Pickups", icon: Repeat },
+      { to: "/business/reports", label: "Reports", icon: BarChart3 },
+    ],
+  },
+  admin: { items: [{ to: "/admin", label: "Overview", icon: ShieldCheck }] },
+};
 
 export const INSTITUTION_KEYS = ["hub", "processor", "admin"] as const;
 /** Primary account types; institutional workspaces sit under "institution". */

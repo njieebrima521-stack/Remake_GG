@@ -57,7 +57,7 @@ function HubPage() {
         <StatCard label="Handed over" value={state.batches.filter((b) => b.status !== "ready").length} sub="To processors" icon={PackageCheck} />
       </div>
       <Tabs defaultValue="received">
-        <TabsList><TabsTrigger value="received">Received loads & batching</TabsTrigger><TabsTrigger value="incoming">Incoming</TabsTrigger><TabsTrigger value="batches">Batches</TabsTrigger></TabsList>
+        <TabsList className="flex h-auto w-full flex-wrap justify-start sm:w-auto"><TabsTrigger value="received">Received loads &amp; batching</TabsTrigger><TabsTrigger value="incoming">Incoming</TabsTrigger><TabsTrigger value="batches">Batches</TabsTrigger></TabsList>
         <TabsContent value="received" className="mt-4">
           <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
             <Panel title="Received loads" description="Select loads of the same material to batch them.">

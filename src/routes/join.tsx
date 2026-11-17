@@ -76,7 +76,7 @@ function JoinPage() {
           <h2 className="mt-4 font-display text-4xl font-semibold">{s.title}</h2>
           <p className="mt-2 max-w-md text-ink-muted">{s.text}</p>
           <div className="mt-6 flex items-center gap-4">
-            <div className="flex gap-1.5">{SLIDES.map((_, k) => <button key={k} onClick={() => setI(k)} aria-label={`Slide ${k + 1}`} className={cn("h-1.5 rounded-full transition-all", k === i ? "w-8 bg-primary" : "w-3 bg-ink-foreground/40")} />)}</div>
+            <div className="flex flex-wrap gap-1.5">{SLIDES.map((_, k) => <button key={k} onClick={() => setI(k)} aria-label={`Slide ${k + 1}`} className={cn("h-1.5 rounded-full transition-all", k === i ? "w-8 bg-primary" : "w-3 bg-ink-foreground/40")} />)}</div>
             <Button variant="pill" size="sm" onClick={() => setI((i + 1) % SLIDES.length)}>{i === SLIDES.length - 1 ? "Start again" : "Next"}</Button>
           </div>
         </div>
